@@ -1,0 +1,169 @@
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~LEVEL 1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import java.util.Scanner;
+public class levelOne {
+	public static void main(String[] args) {
+//~~~~~~~~~~~~~~~LOCAL variables~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		int i=0, floor=0;
+		char c;
+//~~~~~~~~~~~~~~~INIT scanner~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Scanner myScanner= new Scanner(System.in);
+		myScanner.useDelimiter("");
+		String input=myScanner.nextLine();
+//~~~~~~~~~~~~~~Count floor loop~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		while(i<input.length()){
+		 c=input.charAt(i);
+		if(c=='(')
+			floor++;
+		else if(c==')')
+			floor--;
+		i++;
+		}
+	System.out.println(floor);
+	}
+
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~LEVEL 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import java.awt.List;
+import java.util.*;
+
+public class level2 {
+	public static void main(String[] args) {
+		// ~~~~~~~~~~~~~~~LOCAL variables~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		int i = 0;// index for the string input
+		int index = 0;// index for the XY array
+		char c;
+		int pos = 0;// counter for the points that i visited at least twice
+		point curr = new point(0, 0, 0);
+		point temp;
+		// ~~~~~~~~~~~~~~~INIT scanner~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Scanner myScanner = new Scanner(System.in);// input from user
+		myScanner.useDelimiter("");
+		String input = myScanner.nextLine();
+
+		point xy[] = new point[input.length()];// save the points that we going
+						       // throw in XY array
+		point p = new point(0, 0, 1);// start point
+		xy[0] = p;
+		index++;
+	        //~~~~~~~~~~~~~~~~~~~ iterate over the input~~~~~~~~~~~~~~~~~~~~~~~
+		while (i < input.length()) {
+			c = input.charAt(i);
+			if (c == '<') {// move left
+				curr.decX();
+				temp = contains(xy, curr);// check if I already been here
+				if (temp != null)
+					temp.incVisit();
+				else {
+					xy[index] = new point(curr.getX(), curr.getY(), 1);
+					index++;
+				}
+			} else if (c == '>') {// move right
+				curr.incX();
+				temp = contains(xy, curr);// check if I already been here
+				if (temp != null)
+					temp.incVisit();
+				else {
+					xy[index] = new point(curr.getX(), curr.getY(), 1);
+					index++;
+				}
+			} else if (c == '^') {// move up
+				curr.incY();
+				temp = contains(xy, curr);// check if I already been here
+				if (temp != null)
+					temp.incVisit();
+				else {
+					xy[index] = new point(curr.getX(), curr.getY(), 1);
+					index++;
+				}
+			} else if (c == 'v') {// move down
+				curr.decY();
+				temp = contains(xy, curr);// check if I already been here
+				if (temp != null)
+					temp.incVisit();
+				else {
+					xy[index] = new point(curr.getX(), curr.getY(), 1);
+					index++;
+				}
+			}
+			i++;
+
+		}
+		for (int j = 0; j < xy.length; j++) {// count how much points I visit
+						     // more then once
+			if (xy[j] != null) {
+				if (xy[j].getVist() > 1)
+					pos++;
+			}
+		}
+		System.out.println(pos);
+	}
+
+	private static point contains(point xy[], point p) {// if XY contains the
+							    // point p return p,
+							   // otherwise return null
+		for (int i = 0; i < xy.length; i++) {
+			if (xy[i] != null) {
+				if (xy[i].getX() == p.getX() & xy[i].getY() == p.getY()) {
+					return xy[i];
+				}
+			}
+		}
+		return null;
+	}
+
+	// point describe order pair (x,y) on the Cartesian coordinate system with
+	// number of visting times in this point
+	private static class point {
+		int _x;
+		int _y;
+		int _visit;
+
+		public point(int x, int y, int visit) {
+			_x = x;
+			_y = y;
+			_visit = visit;
+		}
+
+		public int getX() {
+			return _x;
+		}
+
+		public int getY() {
+			return _y;
+		}
+
+		public void setX(int x) {
+			_x = x;
+		}
+
+		public void setY(int y) {
+			_y = y;
+		}
+
+		public void incX() {
+			_x++;
+		}
+
+		public void decX() {
+			_x--;
+		}
+
+		public void incY() {
+			_y++;
+		}
+
+		public void decY() {
+			_y--;
+		}
+
+		public void incVisit() {
+			_visit++;
+		}
+
+		public int getVist() {
+			return _visit;
+		}
+	}
+
+}
